@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Beylik Media</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  /* ─── RESET & ROOT ─── */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #08090A;
+    --green: #0A5C63;
+    --green-dim: rgba(10,92,99,0.18);
+    --ivory: #F3F2EE;
+    --ivory-dim: rgba(243,242,238,0.55);
+    --ivory-faint: rgba(243,242,238,0.28);
+    --gold: #C29447;
+    --gold-dim: rgba(194,148,71,0.35);
+    --gold-glow: rgba(194,148,71,0.12);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ivory);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    line-height: 1.55;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ─── GRAIN OVERLAY ─── */
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 1;
+  }
+
+  /* ─── TYPOGRAPHY UTILS ─── */
+  .label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .headline {
+    font-family: 'Barlow Condensed', sans-serif;
+    text-transform: uppercase;
+    line-height: 0.95;
+    color: var(--ivory);
+  }
+  .headline .dim { color: var(--ivory-dim); }
+  .headline .gold { color: var(--gold); }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 28px 56px;
+    background: linear-gradient(to bottom, rgba(8,9,10,0.92) 0%, transparent 100%);
+  }
+  .nav-logo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--ivory);
+  }
+  .nav-logo span { color: var(--gold); }
+  .nav-links {
+    display: flex; gap: 40px;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--ivory-dim);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--ivory); }
+  .nav-cta {
+    border: 1px solid var(--gold-dim);
+    color: var(--gold);
+    padding: 10px 28px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: background 0.3s, color 0.3s, border-color 0.3s;
+  }
+  .nav-cta:hover {
+    background: var(--gold);
+    color: var(--bg);
+    border-color: var(--gold);
+  }
+
+  /* ─── SECTION SPACING ─── */
+  section { position: relative; }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 140px 80px 100px;
+    gap: 60px;
+  }
+  .hero-left { max-width: 580px; }
+  .hero-left .label { margin-bottom: 40px; display: block; }
+  .hero-left .headline { font-size: clamp(58px, 7.5vw, 96px); margin-bottom: 36px; }
+  .hero-left p {
+    color: var(--ivory-faint);
+    font-size: 16px;
+    max-width: 380px;
+    line-height: 1.7;
+    margin-bottom: 52px;
+  }
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    color: var(--ivory);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: gap 0.3s;
+  }
+  .hero-cta:hover { gap: 24px; }
+  .hero-cta .arrow {
+    width: 42px; height: 42px;
+    border: 1px solid var(--gold-dim);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.3s, border-color 0.3s;
+  }
+  .hero-cta:hover .arrow {
+    background: var(--gold);
+    border-color: var(--gold);
+  }
+  .hero-cta .arrow svg { width: 16px; height: 16px; stroke: var(--ivory); fill: none; stroke-width: 2; }
+  .hero-cta:hover .arrow svg { stroke: var(--bg); }
+
+  /* Hero Right — abstract composition */
+  .hero-right {
+    position: relative;
+    height: 480px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-orb {
+    position: absolute;
+    border-radius: 50%;
+  }
+  .hero-orb-1 {
+    width: 340px; height: 340px;
+    background: radial-gradient(circle at 35% 40%, var(--green) 0%, rgba(10,92,99,0.15) 55%, transparent 75%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    filter: blur(3px);
+  }
+  .hero-orb-2 {
+    width: 180px; height: 180px;
+    background: radial-gradient(circle, var(--gold-dim) 0%, transparent 70%);
+    top: 18%; right: 12%;
+    filter: blur(1px);
+    animation: drift 8s ease-in-out infinite;
+  }
+  .hero-orb-3 {
+    width: 90px; height: 90px;
+    border: 1px solid var(--gold-dim);
+    bottom: 12%; left: 18%;
+    animation: drift 11s ease-in-out infinite reverse;
+  }
+  .hero-arch {
+    position: absolute;
+    width: 220px; height: 280px;
+    border: 1px solid rgba(194,148,71,0.18);
+    border-radius: 110px 110px 0 0;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .hero-line {
+    position: absolute;
+    width: 1px; height: 120px;
+    background: linear-gradient(to bottom, var(--gold-dim), transparent);
+    bottom: 8%; left: 50%;
+  }
+  @keyframes drift {
+    0%,100% { transform: translateY(0px) scale(1); }
+    50%      { transform: translateY(-18px) scale(1.04); }
+  }
+
+  /* ─── STATS BAR ─── */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid rgba(243,242,238,0.08);
+    border-bottom: 1px solid rgba(243,242,238,0.08);
+  }
+  .stat {
+    padding: 52px 60px;
+    border-right: 1px solid rgba(243,242,238,0.06);
+  }
+  .stat:last-child { border-right: none; }
+  .stat-number {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 52px;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+  .stat-desc {
+    font-size: 13px;
+    color: var(--ivory-faint);
+    letter-spacing: 0.5px;
+  }
+
+  /* ─── WHO IT'S FOR ─── */
+  .for-section { padding: 140px 80px; }
+  .for-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: end;
+    margin-bottom: 100px;
+  }
+  .for-header .headline { font-size: clamp(48px, 6vw, 80px); }
+  .for-header-right p {
+    color: var(--ivory-faint);
+    font-size: 15px;
+    max-width: 420px;
+    line-height: 1.8;
+  }
+  .for-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+  }
+  .for-card {
+    background: rgba(243,242,238,0.03);
+    border: 1px solid rgba(243,242,238,0.06);
+    padding: 56px 36px;
+    transition: background 0.4s, border-color 0.4s;
+    position: relative;
+  }
+  .for-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold-dim), transparent);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .for-card:hover::before { opacity: 1; }
+  .for-card:hover {
+    background: rgba(10,92,99,0.08);
+    border-color: rgba(10,92,99,0.25);
+  }
+  .for-card-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    margin-bottom: 28px;
+  }
+  .for-card h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 14px;
+    color: var(--ivory);
+  }
+  .for-card p {
+    font-size: 13px;
+    color: var(--ivory-faint);
+    line-height: 1.7;
+  }
+
+  /* ─── PROBLEM / SOLUTION ─── */
+  .ps-section { padding: 140px 80px; }
+  .ps-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .ps-block {
+    padding: 80px 64px;
+    position: relative;
+  }
+  .ps-block.problem { background: rgba(243,242,238,0.025); }
+  .ps-block.solution { background: rgba(10,92,99,0.1); border: 1px solid rgba(10,92,99,0.25); }
+  .ps-block .label { margin-bottom: 36px; display: block; }
+  .ps-block.solution .label { color: var(--green); filter: brightness(1.6); }
+  .ps-block h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 34px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 28px;
+  }
+  .ps-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 22px;
+  }
+  .ps-item-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    margin-top: 9px;
+    flex-shrink: 0;
+  }
+  .problem .ps-item-dot { background: rgba(243,242,238,0.3); }
+  .solution .ps-item-dot { background: var(--gold); }
+  .ps-item p { font-size: 14px; color: var(--ivory-dim); line-height: 1.7; }
+
+  /* ─── SERVICES ─── */
+  .services-section { padding: 140px 80px; }
+  .services-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 100px;
+  }
+  .services-header .headline { font-size: clamp(48px, 6vw, 78px); }
+  .services-header p {
+    color: var(--ivory-faint);
+    font-size: 15px;
+    max-width: 320px;
+    text-align: right;
+    line-height: 1.8;
+  }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+  }
+  .service-card {
+    background: rgba(243,242,238,0.03);
+    border: 1px solid rgba(243,242,238,0.06);
+    padding: 64px 52px;
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 36px;
+    transition: background 0.4s, border-color 0.4s;
+    position: relative;
+    overflow: hidden;
+  }
+  .service-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold-dim), transparent);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .service-card:hover::after { opacity: 1; }
+  .service-card:hover {
+    background: rgba(10,92,99,0.07);
+    border-color: rgba(10,92,99,0.22);
+  }
+  .service-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 42px;
+    font-weight: 700;
+    color: var(--gold);
+    opacity: 0.6;
+    line-height: 1;
+  }
+  .service-card h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 26px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 14px;
+  }
+  .service-card p {
+    font-size: 13px;
+    color: var(--ivory-faint);
+    line-height: 1.75;
+  }
+
+  /* ─── PRINCIPLES ─── */
+  .principles-section {
+    padding: 160px 80px;
+    background: linear-gradient(180deg, var(--bg) 0%, rgba(10,92,99,0.06) 50%, var(--bg) 100%);
+  }
+  .principles-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .principles-inner .label { margin-bottom: 56px; display: block; }
+  .principles-inner .headline { font-size: clamp(44px, 5.5vw, 72px); margin-bottom: 80px; }
+  .principles-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 60px 80px;
+  }
+  .principle {
+    text-align: left;
+    position: relative;
+    padding-left: 28px;
+  }
+  .principle::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 4px;
+    width: 2px; height: 36px;
+    background: var(--gold);
+  }
+  .principle h4 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 10px;
+    color: var(--ivory);
+  }
+  .principle p {
+    font-size: 13px;
+    color: var(--ivory-faint);
+    line-height: 1.75;
+  }
+
+  /* ─── TRUST BAR (scrolling logos placeholder) ─── */
+  .trust-section { padding: 100px 80px; }
+  .trust-inner {
+    border-top: 1px solid rgba(243,242,238,0.07);
+    border-bottom: 1px solid rgba(243,242,238,0.07);
+    padding: 56px 0;
+  }
+  .trust-inner .label { text-align: center; margin-bottom: 40px; display: block; }
+  .trust-logos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 72px;
+    flex-wrap: wrap;
+  }
+  .trust-logo-placeholder {
+    width: 110px; height: 32px;
+    background: rgba(243,242,238,0.06);
+    border-radius: 3px;
+  }
+
+  /* ─── CTA SECTION ─── */
+  .cta-section {
+    padding: 180px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-bg-orb {
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(10,92,99,0.18) 0%, transparent 65%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  .cta-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 760px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .cta-inner .label { margin-bottom: 48px; display: block; }
+  .cta-inner .headline { font-size: clamp(44px, 6vw, 76px); margin-bottom: 32px; }
+  .cta-inner p {
+    color: var(--ivory-faint);
+    font-size: 16px;
+    max-width: 480px;
+    margin: 0 auto 56px;
+    line-height: 1.8;
+  }
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 18px;
+    border: 1px solid var(--gold-dim);
+    padding: 18px 40px;
+    text-decoration: none;
+    color: var(--ivory);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    border-radius: 2px;
+    transition: background 0.35s, border-color 0.35s, color 0.35s;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gold);
+    transform: translateY(100%);
+    transition: transform 0.35s;
+  }
+  .cta-btn:hover::before { transform: translateY(0); }
+  .cta-btn span { position: relative; z-index: 1; }
+  .cta-btn:hover { color: var(--bg); border-color: var(--gold); }
+  .cta-btn .arrow-sm {
+    position: relative; z-index: 1;
+    width: 20px; height: 20px;
+    border: 1px solid var(--gold-dim);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    transition: border-color 0.35s;
+  }
+  .cta-btn:hover .arrow-sm { border-color: var(--bg); }
+  .cta-btn .arrow-sm svg { width: 10px; height: 10px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    padding: 80px 80px 48px;
+    border-top: 1px solid rgba(243,242,238,0.07);
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.8fr 1fr 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 80px;
+  }
+  .footer-brand .nav-logo { font-size: 22px; margin-bottom: 20px; display: block; }
+  .footer-brand p {
+    font-size: 13px;
+    color: var(--ivory-faint);
+    line-height: 1.8;
+    max-width: 300px;
+  }
+  .footer-col h4 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 24px;
+    color: var(--ivory);
+  }
+  .footer-col a {
+    display: block;
+    color: var(--ivory-faint);
+    text-decoration: none;
+    font-size: 14px;
+    margin-bottom: 14px;
+    transition: color 0.3s;
+  }
+  .footer-col a:hover { color: var(--gold); }
+  .footer-bottom {
+    border-top: 1px solid rgba(243,242,238,0.06);
+    padding-top: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-bottom p { font-size: 12px; color: var(--ivory-faint); }
+
+  /* ─── SCROLL REVEAL ─── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.8s cubic-bezier(.22,1,.36,1), transform 0.8s cubic-bezier(.22,1,.36,1);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    nav { padding: 22px 28px; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; padding: 140px 36px 80px; }
+    .hero-right { display: none; }
+    .stats-bar { grid-template-columns: 1fr; }
+    .stat { border-right: none; border-bottom: 1px solid rgba(243,242,238,0.06); padding: 40px 36px; }
+    .for-section, .ps-section, .services-section, .principles-section, .cta-section, .trust-section { padding-left: 36px; padding-right: 36px; }
+    .for-header { grid-template-columns: 1fr; gap: 24px; }
+    .for-grid { grid-template-columns: repeat(2, 1fr); }
+    .ps-grid { grid-template-columns: 1fr; }
+    .services-header { flex-direction: column; align-items: flex-start; gap: 24px; }
+    .services-header p { text-align: left; }
+    .services-grid { grid-template-columns: 1fr; }
+    .principles-row { grid-template-columns: 1fr; gap: 40px; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    footer { padding: 60px 36px 36px; }
+  }
+  @media (max-width: 520px) {
+    .for-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav>
+  <div class="nav-logo">BEYLIK<span>MEDIA</span></div>
+  <ul class="nav-links">
+    <li><a href="#for">Who We Serve</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#principles">Principles</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Start a Conversation</a>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-left">
+    <span class="label">Clipping & Content Systems</span>
+    <h1 class="headline">
+      Systems<br>
+      Built for<br>
+      <span class="gold">Principled</span><br>
+      Growth
+    </h1>
+    <p>We build structured short-form content systems for Muslim entrepreneurs, coaches, and agency owners — designed to scale without compromising what matters.</p>
+    <a href="#contact" class="hero-cta">
+      <span>Begin Your Journey</span>
+      <span class="arrow">
+        <svg viewBox="0 0 16 16"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/></svg>
+      </span>
+    </a>
+  </div>
+  <div class="hero-right">
+    <div class="hero-orb hero-orb-1"></div>
+    <div class="hero-orb hero-orb-2"></div>
+    <div class="hero-orb hero-orb-3"></div>
+    <div class="hero-arch"></div>
+    <div class="hero-line"></div>
+  </div>
+</section>
+
+<!-- ─── STATS BAR ─── -->
+<div class="stats-bar">
+  <div class="stat reveal">
+    <div class="stat-number">4x</div>
+    <div class="stat-desc">Average content output increase within 60 days</div>
+  </div>
+  <div class="stat reveal reveal-delay-1">
+    <div class="stat-number">12+</div>
+    <div class="stat-desc">Faith-aligned entrepreneurs served to date</div>
+  </div>
+  <div class="stat reveal reveal-delay-2">
+    <div class="stat-number">0</div>
+    <div class="stat-desc">Compromises on values in every project we've built</div>
+  </div>
+</div>
+
+<!-- ─── WHO IT'S FOR ─── -->
+<section class="for-section" id="for">
+  <div class="for-header">
+    <h2 class="headline reveal">
+      Built for<br>
+      <span class="gold">Founders</span><br>
+      Who Think<br>
+      Long-Term
+    </h2>
+    <div class="for-header-right reveal reveal-delay-1">
+      <p>We don't work with everyone. We work with the entrepreneurs, coaches, and agency owners who already understand that real growth is built on structure, integrity, and patience — not trends.</p>
+    </div>
+  </div>
+  <div class="for-grid">
+    <div class="for-card reveal">
+      <div class="for-card-num">01</div>
+      <h3>Muslim Entrepreneurs</h3>
+      <p>Founders building businesses rooted in purpose, seeking content systems that align with their values and scale their presence.</p>
+    </div>
+    <div class="for-card reveal reveal-delay-1">
+      <div class="for-card-num">02</div>
+      <h3>Muslim Coaches</h3>
+      <p>Thought leaders with expertise to share, who need a disciplined system to reach the right audience without chasing algorithms.</p>
+    </div>
+    <div class="for-card reveal reveal-delay-2">
+      <div class="for-card-num">03</div>
+      <h3>Muslim Agency Owners</h3>
+      <p>Agency operators who want to scale their own brand alongside client work — without burning out or cutting corners.</p>
+    </div>
+    <div class="for-card reveal reveal-delay-3">
+      <div class="for-card-num">04</div>
+      <h3>Ethics-First Leaders</h3>
+      <p>Any entrepreneur who values long-term thinking, transparency, and sustainable growth over short-term attention.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PROBLEM / SOLUTION ─── -->
+<section class="ps-section">
+  <div class="ps-grid">
+    <div class="ps-block problem reveal">
+      <span class="label">The Problem</span>
+      <h3>What Holds<br>You Back</h3>
+      <div class="ps-item">
+        <div class="ps-item-dot"></div>
+        <p>Short-form content fails without a repeatable system behind it — effort without structure leads nowhere.</p>
+      </div>
+      <div class="ps-item">
+        <div class="ps-item-dot"></div>
+        <p>Inconsistent output erodes trust and makes audience growth unpredictable and exhausting.</p>
+      </div>
+      <div class="ps-item">
+        <div class="ps-item-dot"></div>
+        <p>Chasing trends pulls founders away from deep work and the long-term vision that actually builds wealth.</p>
+      </div>
+      <div class="ps-item">
+        <div class="ps-item-dot"></div>
+        <p>Most content tools and agencies don't consider faith alignment — leaving principled founders feeling uncomfortable.</p>
+      </div>
+    </div>
+    <div class="ps-block solution reveal reveal-delay-1">
+      <span class="label">The Solution</span>
+      <h3>How We<br>Solve It</h3>
+      <div class="ps-item">
+        <div class="ps-item-dot"></div>
+        <p>Structured clipping systems that turn your long-form content into a consistent, repeatable short-form pipeline.</p>
+      </div>
+      <div class="ps-item">
+        <div class="ps-item-dot"></div>
+        <p>Faith-safe content handling — every piece of content is reviewed with care, ethics, and integrity in mind.</p>
+      </div>
+      <div class="ps-item">
+        <div class="ps-item-dot"></div>
+        <p>A long-term growth mindset baked into every strategy we build — no hype cycles, no hollow vanity metrics.</p>
+      </div>
+      <div class="ps-item">
+        <div class="ps-item-dot"></div>
+        <p>Systems designed so you focus on your craft. We handle the structure. You stay focused on what matters.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SERVICES ─── -->
+<section class="services-section" id="services">
+  <div class="services-header">
+    <h2 class="headline reveal">
+      What We<br>
+      <span class="gold">Deliver</span>
+    </h2>
+    <p class="reveal reveal-delay-1">Each service is designed as a system, not a task. Built to run consistently, built to scale cleanly.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="service-num">01</div>
+      <div>
+        <h3>Clipping & Repurposing</h3>
+        <p>We extract high-value clips from your long-form content — podcasts, talks, webinars — and transform them into polished short-form pieces optimized for reach and resonance.</p>
+      </div>
+    </div>
+    <div class="service-card reveal reveal-delay-1">
+      <div class="service-num">02</div>
+      <div>
+        <h3>Short-Form Systems</h3>
+        <p>A full pipeline — from content selection to editing to publishing — designed as a repeatable system your brand can run month after month without reinventing the wheel.</p>
+      </div>
+    </div>
+    <div class="service-card reveal reveal-delay-2">
+      <div class="service-num">03</div>
+      <div>
+        <h3>Content Structure Optimization</h3>
+        <p>We audit and rebuild how your content is organized, sequenced, and delivered. Better structure means better engagement — without more effort on your end.</p>
+      </div>
+    </div>
+    <div class="service-card reveal reveal-delay-3">
+      <div class="service-num">04</div>
+      <div>
+        <h3>Faith-Aligned Content Review</h3>
+        <p>Every piece of content passes through a careful review process. We ensure your brand voice stays grounded, authentic, and aligned with the values you've built your business on.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PRINCIPLES ─── -->
+<section class="principles-section" id="principles">
+  <div class="principles-inner">
+    <span class="label reveal">How We Operate</span>
+    <h2 class="headline reveal">
+      Guided By<br>
+      <span class="gold">Principles</span>,<br>
+      Not Trends
+    </h2>
+    <div class="principles-row">
+      <div class="principle reveal">
+        <h4>Discipline Over Virality</h4>
+        <p>Consistency and structure compound over time. We build systems that deliver results sustainably, not strategies that chase a single moment.</p>
+      </div>
+      <div class="principle reveal reveal-delay-1">
+        <h4>Systems Over Hacks</h4>
+        <p>Shortcuts decay. Systems endure. Every solution we build is designed to scale with your business, not collapse under pressure.</p>
+      </div>
+      <div class="principle reveal reveal-delay-2">
+        <h4>Barakah Over Shortcuts</h4>
+        <p>We believe true growth comes from work done with integrity. Our approach is rooted in patience, quality, and meaning — not speed for its own sake.</p>
+      </div>
+      <div class="principle reveal reveal-delay-3">
+        <h4>Ethics Over Attention</h4>
+        <p>Attention without integrity is noise. We help you build an audience that trusts you — because the content you put out genuinely reflects who you are.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── TRUST BAR ─── -->
+<section class="trust-section">
+  <div class="trust-inner">
+    <span class="label">Trusted By Growing Brands</span>
+    <div class="trust-logos">
+      <div class="trust-logo-placeholder"></div>
+      <div class="trust-logo-placeholder"></div>
+      <div class="trust-logo-placeholder"></div>
+      <div class="trust-logo-placeholder"></div>
+      <div class="trust-logo-placeholder"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CTA ─── -->
+<section class="cta-section" id="contact">
+  <div class="cta-bg-orb"></div>
+  <div class="cta-inner">
+    <span class="label reveal">Ready When You Are</span>
+    <h2 class="headline reveal">
+      Built for Founders<br>
+      Who Value<br>
+      <span class="gold">Principles</span>
+    </h2>
+    <p class="reveal reveal-delay-1">No pressure. No hype. If your goals align with how we work, we'd like to talk. Reach out on your terms.</p>
+    <a href="mailto:hello@beylikmedia.com" class="cta-btn reveal reveal-delay-2">
+      <span>Start a Conversation</span>
+      <span class="arrow-sm">
+        <svg viewBox="0 0 10 10"><line x1="2" y1="5" x2="8" y2="5"/><polyline points="6,3 8,5 6,7"/></svg>
+      </span>
+    </a>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="nav-logo">BEYLIK<span>MEDIA</span></span>
+      <p>Structured short-form content systems for principled entrepreneurs. Built on discipline, integrity, and long-term thinking.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <a href="#for">Who We Serve</a>
+      <a href="#services">Services</a>
+      <a href="#principles">Principles</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <a href="#">Clipping & Repurposing</a>
+      <a href="#">Short-Form Systems</a>
+      <a href="#">Content Optimization</a>
+      <a href="#">Faith-Aligned Review</a>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <a href="#">hello@beylikmedia.com</a>
+      <a href="#">Instagram</a>
+      <a href="#">LinkedIn</a>
+      <a href="#">YouTube</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Beylik Media. All rights reserved.</p>
+    <p>Designed with intention.</p>
+  </div>
+</footer>
+
+<!-- ─── SCROLL REVEAL JS ─── -->
+<script>
+(function(){
+  const els = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('visible');
+      }
+    });
+  },{ threshold: 0.18 });
+  els.forEach(el => io.observe(el));
+})();
+</script>
+
+</body>
+</html>
